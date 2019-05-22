@@ -165,6 +165,10 @@ return [
         /*
          * Package Service Providers...
          */
+        \Zizaco\Entrust\EntrustServiceProvider::class,
+        \RunningTime\RunningTimeServiceProvider::class,
+        \App\Providers\ResponseMacrosProvider::class,
+        \Barryvdh\Cors\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -174,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 

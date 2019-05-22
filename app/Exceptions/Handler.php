@@ -3,7 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -28,9 +32,9 @@ class Handler extends ExceptionHandler
 
     /**
      * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
+     * @param Exception $exception
+     * @return mixed|void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -39,13 +43,33 @@ class Handler extends ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $exception
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if (method_exists($exception, 'render')) {
+            return $exception->render($request);
+        } else if ($exception instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($exception, $request);
+        } else if ($exception instanceof AuthenticationException) {
+            return response()->errorUnauthorized('登陆失效，请重新登录');
+        } elseif ($exception instanceof NotFoundHttpException) {
+            return response()->errorNotFound('地址错误');
+        } elseif ($exception instanceof ThrottleRequestsException) {
+            return response()->errorInternal('请求过于频繁，请稍后重试', 400);
+        }
+
+        if (config('app.debug') && (app()->environment() !== 'production')) {
+            return response()->error(500, $exception->getMessage(), collect($exception->getTrace())->take(5));
+        }
+
+        return response()->errorInternal();
+    }
+
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return response()->error($exception->status, 'The given data was invalid', $exception->errors());
     }
 }
