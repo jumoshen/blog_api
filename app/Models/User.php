@@ -109,7 +109,7 @@ class User extends Model implements JWTSubject, Authenticatable, JWTAuthenticabl
      */
     public function getAuthIdentifier()
     {
-        return $this->workcode;
+        return $this->id;
     }
 
     /**
