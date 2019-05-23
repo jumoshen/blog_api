@@ -2,13 +2,8 @@
 
 namespace App\Models;
 
-use App\Exceptions\ApiException;
-use App\Models\Auth\Permission;
-use App\Models\Auth\UserDepartment;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
