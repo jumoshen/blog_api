@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Identicon\Identicon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,6 +27,7 @@ class TestController extends Controller
 
         return response()->success(User::query()->create([
             'name'     => $request->name,
+            'avatar'   => (new Identicon())->getImageDataUri($request->name, 256),
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]));
