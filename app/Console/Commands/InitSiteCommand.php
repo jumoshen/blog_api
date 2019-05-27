@@ -33,11 +33,19 @@ class InitSiteCommand extends Command
     /**
      * Execute the console command.
      *
+     * 1⃣ 配置文件
+     * 2⃣ 生成app key
+     * 3⃣ 生成jwt key
+     * 4⃣ 运行迁移文件
+     * 5⃣ 运行databaseSeeder
+     *
      * @return mixed
      */
     public function handle()
     {
+        shell_exec('cp .env.example .env');
         $this->call('key:generate');
+        $this->call('jwt:secret');
         $this->call('migrate');
         $this->call('db:seed');
     }

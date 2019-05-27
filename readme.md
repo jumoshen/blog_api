@@ -8,3 +8,4 @@ This is api for my blog(jumoshen)
 #### project init
 - composer install
 - php artisan site:init
+
