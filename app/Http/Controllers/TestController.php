@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
 use App\Models\User;
 use Identicon\Identicon;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,5 +33,33 @@ class TestController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]));
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws ApiException
+     */
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'email'    => 'required|string|max:255',
+            'password' => 'required|string|min:8'
+        ], [], []);
+
+        $user = User::query()->where('email', $request->input('email'))->firstOrFail();
+
+        if (!Hash::check($request->input('password'), $user->password)) throw new ApiException('邮箱或密码错误');
+
+
+//        dd($user instanceof Authenticatable);
+        $token = auth('api')->login($user);
+
+        return response()->success([
+            'type'    => 'Bearer',
+            'token'   => $token,
+            'expires' => auth('api')->factory()->getTTL() * 60,
+            'user'    => $this->user(),
+        ]);
     }
 }
