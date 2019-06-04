@@ -51,8 +51,6 @@ class TestController extends Controller
 
         if (!Hash::check($request->input('password'), $user->password)) throw new ApiException('邮箱或密码错误');
 
-
-//        dd($user instanceof Authenticatable);
         $token = auth('api')->login($user);
 
         return response()->success([
@@ -61,5 +59,13 @@ class TestController extends Controller
             'expires' => auth('api')->factory()->getTTL() * 60,
             'user'    => $this->user(),
         ]);
+    }
+
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function testPolicy()
+    {
+        $this->authorize('create', \Auth::user());
     }
 }

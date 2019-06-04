@@ -39,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapTestRoutes();
+
         //
     }
 
@@ -69,5 +71,18 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['cors', 'api'])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "test" routes for the application
+     *
+     *
+     */
+    protected function mapTestRoutes()
+    {
+        Route::prefix('test')
+            ->middleware(['cors', 'api'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/test.php'));
     }
 }
