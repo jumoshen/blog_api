@@ -14,6 +14,7 @@
         "barryvdh/laravel-snappy": "^0.4.3",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "jumoshen/ding-bot": "^0.1",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
@@ -22,8 +23,7 @@
         "sentry/sentry-laravel": "^0.11.0",
         "tymon/jwt-auth": "1.0.0-rc.3",
         "y-ui/laravel-running-time": "^1.0",
-        "zizaco/entrust": "^1.9",
-        "yzalis/identicon": "^1.2"
+        "zizaco/entrust": "^1.9"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
             return response()->error(500, $exception->getMessage(), collect($exception->getTrace())->take(5));
         }
 
-        return response()->errorInternal();
+        return response()->errorInternal($exception->getMessage(), 500, collect($exception->getTrace())->take(5));
     }
 
     protected function invalidJson($request, ValidationException $exception)
